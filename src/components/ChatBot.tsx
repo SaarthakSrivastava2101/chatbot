@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, User, Bot } from 'lucide-react';
 
+interface ChatBotProps {
+  isDarkMode?: boolean;
+}
+
 interface Message {
   id: number;
   text: string;
@@ -58,7 +62,7 @@ const menuData: MenuData = {
   ]
 };
 
-const ChatBot: React.FC = () => {
+const ChatBot: React.FC<ChatBotProps> = ({ isDarkMode = false }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -89,18 +93,18 @@ const ChatBot: React.FC = () => {
     
     if (message.includes('breakfast')) {
       const dish = getRandomDish('breakfast');
-      return `For breakfast today, I recommend: ${dish}! Perfect way to start your day at SRM! 🌅`;
+      return `Your breakfast recommendation: ${dish}! Perfect way to start your day at SRM! 🌅`;
     } else if (message.includes('lunch')) {
       const dish = getRandomDish('lunch');
-      return `For lunch, try our: ${dish}! A hearty meal to fuel your afternoon studies! 🍛`;
+      return `Your lunch recommendation: ${dish}! A hearty meal to fuel your afternoon studies! 🍛`;
     } else if (message.includes('snacks') || message.includes('evening')) {
       const dish = getRandomDish('snacks');
-      return `Evening snack special: ${dish}! Perfect for your study break! ☕`;
+      return `Your snack recommendation: ${dish}! Perfect for your study break! ☕`;
     } else if (message.includes('dinner')) {
       const dish = getRandomDish('dinner');
-      return `For dinner tonight: ${dish}! End your day with this delicious meal! 🌙`;
+      return `Your dinner recommendation: ${dish}! A delicious way to end your day! 🌙`;
     } else if (message.includes('menu') || message.includes('all')) {
-      return `Here are today's specials:\n🌅 Breakfast: ${getRandomDish('breakfast')}\n🍛 Lunch: ${getRandomDish('lunch')}\n☕ Snacks: ${getRandomDish('snacks')}\n🌙 Dinner: ${getRandomDish('dinner')}`;
+      return `Here are my recommendations for you:\n🌅 Breakfast: ${getRandomDish('breakfast')}\n🍛 Lunch: ${getRandomDish('lunch')}\n☕ Snacks: ${getRandomDish('snacks')}\n🌙 Dinner: ${getRandomDish('dinner')}`;
     } else if (message.includes('hello') || message.includes('hi')) {
       return "Hello there! Welcome to Tirupati Mess! What meal would you like to know about? 😊";
     } else if (message.includes('thanks') || message.includes('thank')) {
@@ -144,15 +148,23 @@ const ChatBot: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-2xl overflow-hidden max-w-md w-full h-96 flex flex-col">
+    <div className={`rounded-xl shadow-2xl overflow-hidden max-w-md w-full h-96 flex flex-col transition-colors duration-300 ${
+      isDarkMode ? 'bg-gray-800' : 'bg-white'
+    }`}>
       {/* Chat Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 flex items-center space-x-3">
+      <div className={`p-4 flex items-center space-x-3 transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-gray-700 to-gray-800' 
+          : 'bg-gradient-to-r from-blue-600 to-blue-700'
+      }`}>
         <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center animate-bounce">
           <Bot className="w-6 h-6 text-white" />
         </div>
         <div>
           <h3 className="text-white font-semibold">Chef Bot</h3>
-          <p className="text-blue-100 text-sm">Tirupati Mess Assistant</p>
+          <p className={`text-sm transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-300' : 'text-blue-100'
+          }`}>Tirupati Mess Assistant</p>
         </div>
       </div>
 
@@ -166,7 +178,9 @@ const ChatBot: React.FC = () => {
             <div
               className={`max-w-xs px-4 py-2 rounded-lg ${
                 message.isBot
-                  ? 'bg-gray-100 text-gray-800'
+                  ? isDarkMode 
+                    ? 'bg-gray-700 text-gray-200' 
+                    : 'bg-gray-100 text-gray-800'
                   : 'bg-blue-600 text-white'
               } whitespace-pre-line`}
             >
@@ -185,12 +199,20 @@ const ChatBot: React.FC = () => {
         
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 px-4 py-2 rounded-lg flex items-center space-x-2">
+            <div className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300 ${
+              isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+            }`}>
               <Bot className="w-4 h-4 text-orange-500" />
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-pulse transition-colors duration-300 ${
+                  isDarkMode ? 'bg-gray-500' : 'bg-gray-400'
+                }`}></div>
+                <div className={`w-2 h-2 rounded-full animate-pulse transition-colors duration-300 ${
+                  isDarkMode ? 'bg-gray-500' : 'bg-gray-400'
+                }`} style={{animationDelay: '0.2s'}}></div>
+                <div className={`w-2 h-2 rounded-full animate-pulse transition-colors duration-300 ${
+                  isDarkMode ? 'bg-gray-500' : 'bg-gray-400'
+                }`} style={{animationDelay: '0.4s'}}></div>
               </div>
             </div>
           </div>
@@ -199,7 +221,9 @@ const ChatBot: React.FC = () => {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t">
+      <div className={`p-4 border-t transition-colors duration-300 ${
+        isDarkMode ? 'border-gray-700' : 'border-gray-200'
+      }`}>
         <div className="flex space-x-2">
           <input
             type="text"
@@ -207,7 +231,11 @@ const ChatBot: React.FC = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask about meals..."
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            className={`flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-colors duration-300 ${
+              isDarkMode 
+                ? 'border-gray-600 bg-gray-700 text-white placeholder-gray-400' 
+                : 'border-gray-300 bg-white text-gray-900 placeholder-gray-500'
+            }`}
           />
           <button
             onClick={sendMessage}

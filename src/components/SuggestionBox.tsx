@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { MessageSquare, Star, Send } from 'lucide-react';
 
-const SuggestionBox: React.FC = () => {
+interface SuggestionBoxProps {
+  isDarkMode?: boolean;
+}
+
+const SuggestionBox: React.FC<SuggestionBoxProps> = ({ isDarkMode = false }) => {
   const [suggestion, setSuggestion] = useState('');
   const [rating, setRating] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -19,14 +23,20 @@ const SuggestionBox: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full">
+    <div className={`rounded-xl shadow-2xl p-6 max-w-md w-full transition-colors duration-300 ${
+      isDarkMode ? 'bg-gray-800' : 'bg-white'
+    }`}>
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
           <MessageSquare className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-gray-800">Suggestion Box</h3>
-          <p className="text-gray-600 text-sm">Help us improve Tirupati Mess!</p>
+          <h3 className={`text-xl font-bold transition-colors duration-300 ${
+            isDarkMode ? 'text-white' : 'text-gray-800'
+          }`}>Suggestion Box</h3>
+          <p className={`text-sm transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+          }`}>Help us improve Tirupati Mess!</p>
         </div>
       </div>
 
@@ -37,13 +47,19 @@ const SuggestionBox: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h4 className="text-lg font-semibold text-gray-800 mb-2">Thank You!</h4>
-          <p className="text-gray-600">Your suggestion has been submitted successfully!</p>
+          <h4 className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+            isDarkMode ? 'text-white' : 'text-gray-800'
+          }`}>Thank You!</h4>
+          <p className={`transition-colors duration-300 ${
+            isDarkMode ? 'text-gray-300' : 'text-gray-600'
+          }`}>Your suggestion has been submitted successfully!</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={`block text-sm font-medium mb-2 transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-300' : 'text-gray-700'
+            }`}>
               Rate Your Experience
             </label>
             <div className="flex space-x-1">
@@ -67,14 +83,20 @@ const SuggestionBox: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className={`block text-sm font-medium mb-2 transition-colors duration-300 ${
+              isDarkMode ? 'text-gray-300' : 'text-gray-700'
+            }`}>
               Your Suggestion
             </label>
             <textarea
               value={suggestion}
               onChange={(e) => setSuggestion(e.target.value)}
               placeholder="Share your thoughts about our food, service, or any improvements..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-24 text-sm"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-24 text-sm transition-colors duration-300 ${
+                isDarkMode 
+                  ? 'border-gray-600 bg-gray-700 text-white placeholder-gray-400' 
+                  : 'border-gray-300 bg-white text-gray-900 placeholder-gray-500'
+              }`}
               required
             />
           </div>

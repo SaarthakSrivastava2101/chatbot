@@ -4,6 +4,7 @@ import { X, Calendar, ChefHat } from 'lucide-react';
 interface WeeklyMenuProps {
   mealType: string;
   onClose: () => void;
+  isDarkMode?: boolean;
 }
 
 const weeklyMenuData = {
@@ -45,7 +46,7 @@ const weeklyMenuData = {
   }
 };
 
-const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ mealType, onClose }) => {
+const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ mealType, onClose, isDarkMode = false }) => {
   const menuData = weeklyMenuData[mealType as keyof typeof weeklyMenuData];
   const days = Object.keys(menuData);
 
@@ -71,7 +72,9 @@ const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ mealType, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className={`rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden transition-colors duration-300 ${
+        isDarkMode ? 'bg-gray-800' : 'bg-white'
+      }`}>
         {/* Header */}
         <div className={`bg-gradient-to-r ${getMealColor()} p-6 text-white relative`}>
           <button
@@ -90,19 +93,29 @@ const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ mealType, onClose }) => {
         </div>
 
         {/* Menu Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <div className={`p-6 overflow-y-auto max-h-[calc(90vh-120px)] transition-colors duration-300 ${
+          isDarkMode ? 'bg-gray-800' : 'bg-white'
+        }`}>
           <div className="grid gap-6">
             {days.map((day) => (
-              <div key={day} className="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
+              <div key={day} className={`rounded-xl p-4 hover:shadow-md transition-all duration-300 ${
+                isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
+              }`}>
                 <div className="flex items-center space-x-3 mb-3">
                   <Calendar className="w-5 h-5 text-blue-600" />
-                  <h3 className="text-xl font-semibold text-gray-800">{day}</h3>
+                  <h3 className={`text-xl font-semibold transition-colors duration-300 ${
+                    isDarkMode ? 'text-white' : 'text-gray-800'
+                  }`}>{day}</h3>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {menuData[day as keyof typeof menuData].map((item: string, index: number) => (
-                    <div key={index} className="flex items-center space-x-2 bg-white p-3 rounded-lg shadow-sm">
+                    <div key={index} className={`flex items-center space-x-2 p-3 rounded-lg shadow-sm transition-colors duration-300 ${
+                      isDarkMode ? 'bg-gray-600' : 'bg-white'
+                    }`}>
                       <ChefHat className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-sm">{item}</span>
+                      <span className={`text-sm transition-colors duration-300 ${
+                        isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                      }`}>{item}</span>
                     </div>
                   ))}
                 </div>
